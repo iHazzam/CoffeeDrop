@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Location extends Model
 {
-    //
+    protected $guarded = [];
+    public function openings()
+    {
+        return $this->hasMany('App\Opening');
+    }
 }

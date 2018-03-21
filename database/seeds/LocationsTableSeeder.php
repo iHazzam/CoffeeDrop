@@ -7,6 +7,12 @@ use App\Location;
 use Zttp\Zttp;
 class LocationsTableSeeder extends Seeder
 {
+    protected $repository;
+    public function __construct(\App\Repositories\Contracts\LocationRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Run the database seeds.
      *
@@ -20,36 +26,10 @@ class LocationsTableSeeder extends Seeder
         {
             if($k > 0)
             {
-                $locarr = [];
-                $locarr['postcode'] = $record['0'];
-
-                $response = Zttp::get('https://api.postcodes.io/postcodes/' . $locarr['postcode'])->json();
-                $address = Zttp::get('http://maps.googleapis.com/maps/api/geocode/json?latlng=' . $response['result']['latitude'] .  ',' . $response['result']['longitude'])->json();
-
-                $locarr['latitude'] = $response['result']['latitude'];
-                $locarr['longitude'] = $response['result']['longitude'];
-
-                try {
-
-                    $locarr['city'] = $address['results'][0]['address_components'][2]['long_name'];
-                    $locarr['address_line1'] = $address['results'][0]['address_components'][0]['long_name'];
-                    $locarr['address_line2'] = $address['results'][0]['address_components'][1]['long_name'];
-
-                    $loc = Location::create($locarr);
-
-                    for ($i = 1; $i < 15; $i = $i + 2) {
-                        $ope = \App\Opening::create([
-                            'location_id' => $loc->id,
-                            'day' => (($i + 1) / 2) - 1,
-                            'opens' => $record[$i],
-                            'closes' => $record[$i + 1]
-                        ]);
-                    }
-                }
-                catch (\Exception $e)
-                {
-                    dd($response ,$address);
-                }
+                $properties=[];
+                $properties['record'] = $record;
+                $properties['counter'] = $k;
+                $this->repository->create($properties);
             }
             sleep(1);//for rate limit
         }
