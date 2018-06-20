@@ -22,3 +22,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('location/postcode','LocationController@search')->name('location.search');
 Route::post('location','LocationController@store')->name('location.store');
 Route::post('products/quote','ProductController@quote')->name('products.quote');
+Route::get('locations','LocationController@index')->name('location.index');

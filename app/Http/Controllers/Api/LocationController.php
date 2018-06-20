@@ -15,6 +15,9 @@ class LocationController extends Controller
         $this->repo = $repo;
     }
 
+    public function index(){
+        return LocationResource::collection($this->repo->paginate(5));
+    }
     /**
      * Store a newly created resource in storage.
      *
