@@ -35,6 +35,10 @@ class LocationResource extends Resource
                 'city' => $this->city,
                 'postcode' => $this->postcode
             ],
+            'coordinates' => [
+                'latitude' => $this->latitude,
+                'longitude' => $this->longitude,
+            ],
             'distance' => round($this->distance, 1) . " Miles",
             'openings' => $openings
         ];
