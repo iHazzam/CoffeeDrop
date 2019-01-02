@@ -28,7 +28,7 @@ class LocationRepositoryImpl extends RepositoryAbstract implements LocationRepos
             $locarr['postcode'] = $properties['record']['0'];
 
             $resp = $this->geocode($locarr['postcode']);
-            $address = Zttp::get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' . $resp['lat'] .  ',' . $resp['lng'] . '&key=' . env('GOOGLE_MAPS_API_KEY'))->json();
+            $address = Zttp::get('https://maps.googleapis.com/maps/api/geocode/json?latlng=' . $resp['lat'] .  ',' . $resp['lng'] . '&key=' . config('env.googlemaps_key'))->json();
 
             $locarr['latitude'] = $resp['lat'];
             $locarr['longitude'] = $resp['lng'];
